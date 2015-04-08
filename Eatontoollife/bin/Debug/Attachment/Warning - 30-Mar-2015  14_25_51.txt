@@ -1,0 +1,33 @@
+WARNING
+--------------------------------------------------------------------
+
+History data that was take out.
+
+Part number		    : F-1001516-0BMFG
+Tooling number              : T-25811-HB
+Tools qty out		    : 1 Set
+Tools Name 		    : Half Block
+location storage 	    : E103
+Family product		    : france
+Date Time Out		    : 30-Mar-2015  14:24 PM
+Taken By    		    : Hermawan
+
+History Data that has been returned.
+
+Part number		    : F-1001516-0BMFG
+Tooling number		    : T-25811-HB
+Return Tool qty	            : 12 Set
+Tools Name                  : Half Block
+Location storage            : E103
+Family product              : france
+Date return                 : 30-Mar-2015  14:25 PM
+Return By                   : Hermawan
+Welder                      : Felix | 676447
+Tools Status                : Incomplete
+Reason                      : ada yang rusak
+Any issue                      : YES
+Technician Feedback         : Tooling scartch
+
+LIFE TIME TOOLING HAS BEEN USED UNTIL 2000 TIMES
+
+--------------------------------------------------------------------

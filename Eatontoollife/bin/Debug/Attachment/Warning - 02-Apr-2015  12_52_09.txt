@@ -1,0 +1,31 @@
+WARNING
+--------------------------------------------------------------------
+
+History data that was take out.
+
+Part number		    : F-1000101-0
+Tooling number              : T-100010-0-T2-HB
+Tools qty out		    : 1 Set
+Tools Name 		    : Half Block
+location storage 	    : E312
+Family product		    : FRANCE
+Date Time Out		    : 02-Apr-2015  12:51 PM
+Taken By    		    : Hermawan
+
+History Data that has been returned.
+
+Part number		    : F-1000101-0
+Tooling number		    : T-100010-0-T2-HB
+Return Tool qty	            : 1 Set
+Tools Name                  : Half Block
+Location storage            : E312
+Family product              : FRANCE
+Date return                 : 02-Apr-2015  12:51 PM
+Return By                   : Hermawan
+Welder                      : andi | 365645
+Tools Status                : Complete
+Any issue                   : NO
+
+LIFE TIME TOOLING HAS BEEN USED UNTIL 3160 TIMES
+
+--------------------------------------------------------------------

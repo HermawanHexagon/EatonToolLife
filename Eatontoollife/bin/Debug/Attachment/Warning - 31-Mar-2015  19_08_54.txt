@@ -1,0 +1,33 @@
+WARNING
+--------------------------------------------------------------------
+
+History data that was take out.
+
+Part number		    : F-1000101-0
+Tooling number              : T-1000101-T1
+Tools qty out		    : 1 Set
+Tools Name 		    : ID Weld Fixture (Heavy End)
+location storage 	    : B304
+Family product		    : FRANCE
+Date Time Out		    : 31-Mar-2015  19:07 PM
+Taken By    		    : Hermawan
+
+History Data that has been returned.
+
+Part number		    : F-1000101-0
+Tooling number		    : T-1000101-T1
+Return Tool qty	            : 10 Set
+Tools Name                  : ID Weld Fixture (Heavy End)
+Location storage            : B304
+Family product              : FRANCE
+Date return                 : 31-Mar-2015  19:08 PM
+Return By                   : Hermawan
+Welder                      : andi | 365645
+Tools Status                : Incomplete
+Reason                      : There is additional tool
+Any issue                   : YES
+Technician Feedback         : Tooling cannot be used anymore
+
+LIFE TIME TOOLING HAS BEEN USED UNTIL 4165 TIMES
+
+--------------------------------------------------------------------
