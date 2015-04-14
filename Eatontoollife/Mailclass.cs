@@ -50,7 +50,7 @@ namespace Eatontoollife
                 Client.EnableSsl = false;
                 Client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 Client.UseDefaultCredentials = true;
-                Client.Credentials = new NetworkCredential(Mydb.Getemailsender("ISSUE"), Mydb.Getpasswordsender("ISSUE"));
+                Client.Credentials = new NetworkCredential(Mydb.Getemailsender("ISSUE").Replace(";", ","), Mydb.Getpasswordsender("ISSUE"));
                 Attachment Attach = new Attachment(Mydb.Getemailattachment("ISSUE") + @"\Issue - " + messagedateissue + ".txt");
                 MailMessage message = new MailMessage();
                 message.To.Add(Mydb.Getemaillist("ISSUE").Replace(";", ","));
@@ -75,7 +75,7 @@ namespace Eatontoollife
                 Client.EnableSsl = false;
                 Client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 Client.UseDefaultCredentials = true;
-                Client.Credentials = new NetworkCredential(Mydb.Getemailsender("STOP"), Mydb.Getpasswordsender("STOP"));
+                Client.Credentials = new NetworkCredential(Mydb.Getemailsender("STOP").Replace(";", ","), Mydb.Getpasswordsender("STOP"));
                 Attachment Attach = new Attachment(Mydb.Getemailattachment("STOP") + @"\Stop - " + messagedateissue + ".txt");
                 MailMessage message = new MailMessage();
                 message.To.Add(Mydb.Getemaillist("STOP").Replace(";", ","));
@@ -100,7 +100,7 @@ namespace Eatontoollife
                 Client.EnableSsl = false;
                 Client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 Client.UseDefaultCredentials = true;
-                Client.Credentials = new NetworkCredential(Mydb.Getemailsender("WARNING"), Mydb.Getpasswordsender("WARNING"));
+                Client.Credentials = new NetworkCredential(Mydb.Getemailsender("WARNING").Replace(";", ","), Mydb.Getpasswordsender("WARNING"));
                 Attachment Attach = new Attachment(Mydb.Getemailattachment("WARNING") + @"\Warning - " + messagedateissue + ".txt");
                 MailMessage message = new MailMessage();
                 message.To.Add(Mydb.Getemaillist("WARNING").Replace(";", ","));

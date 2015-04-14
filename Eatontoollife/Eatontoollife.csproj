@@ -131,6 +131,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protectpassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Protectpassword.Designer.cs">
+      <DependentUpon>Protectpassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="ReportFeedback.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -180,11 +186,29 @@
     <Compile Include="Updatehistoryusage.Designer.cs">
       <DependentUpon>Updatehistoryusage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Updatereturnhistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Updatereturnhistory.Designer.cs">
+      <DependentUpon>Updatereturnhistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Updateusagebyproduction.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Updateusagebyproduction.Designer.cs">
       <DependentUpon>Updateusagebyproduction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewtoolingisseu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewtoolingisseu.Designer.cs">
+      <DependentUpon>Viewtoolingisseu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="viewunderproductioncs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="viewunderproductioncs.Designer.cs">
+      <DependentUpon>viewunderproductioncs.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Deleteuser.resx">
       <DependentUpon>Deleteuser.cs</DependentUpon>
@@ -232,6 +256,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Protectpassword.resx">
+      <DependentUpon>Protectpassword.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ReportFeedback.resx">
       <DependentUpon>ReportFeedback.cs</DependentUpon>
     </EmbeddedResource>
@@ -256,8 +283,17 @@
     <EmbeddedResource Include="Updatehistoryusage.resx">
       <DependentUpon>Updatehistoryusage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Updatereturnhistory.resx">
+      <DependentUpon>Updatereturnhistory.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Updateusagebyproduction.resx">
       <DependentUpon>Updateusagebyproduction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewtoolingisseu.resx">
+      <DependentUpon>Viewtoolingisseu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="viewunderproductioncs.resx">
+      <DependentUpon>viewunderproductioncs.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

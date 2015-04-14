@@ -80,7 +80,7 @@ namespace Eatontoollife
             }
             else
             {
-                MessageBox.Show("Cannot be Add the report feedback. please fill up the report", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Cannot be Added. please fill up customer name", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 TxtAddfeedback.Focus();
             }
         }

@@ -638,8 +638,8 @@ namespace Eatontoollife
         private void button1_Click(object sender, EventArgs e)
         {
             SendEmailissue();
-            //SendEmailwarning();
-            //SendEmailStop();
+            SendEmailwarning();
+            SendEmailStop();
         }
 
     }

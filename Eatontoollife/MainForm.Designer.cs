@@ -57,6 +57,8 @@
             this.reportFeedBackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTransactionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.returnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.flowChartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Tabuser = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -257,6 +259,7 @@
             this.BGworkerMTN = new System.ComponentModel.BackgroundWorker();
             this.BGworkerUBP = new System.ComponentModel.BackgroundWorker();
             this.BGworkerTIW = new System.ComponentModel.BackgroundWorker();
+            this.BGworkerTTH = new System.ComponentModel.BackgroundWorker();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -309,7 +312,8 @@
             this.fileToolStripMenuItem,
             this.settingToolStripMenuItem,
             this.newTransactionToolStripMenuItem,
-            this.returnToolStripMenuItem});
+            this.returnToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(942, 24);
@@ -450,6 +454,21 @@
             this.returnToolStripMenuItem.Size = new System.Drawing.Size(146, 20);
             this.returnToolStripMenuItem.Text = "&Tool Return Transaction";
             this.returnToolStripMenuItem.Click += new System.EventHandler(this.returnToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.flowChartToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // flowChartToolStripMenuItem
+            // 
+            this.flowChartToolStripMenuItem.Name = "flowChartToolStripMenuItem";
+            this.flowChartToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.flowChartToolStripMenuItem.Text = "Flow Chart";
+            this.flowChartToolStripMenuItem.Click += new System.EventHandler(this.flowChartToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -2088,6 +2107,8 @@
             this.DGTTH2.ReadOnly = true;
             this.DGTTH2.Size = new System.Drawing.Size(712, 165);
             this.DGTTH2.TabIndex = 22;
+            this.DGTTH2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGTTH2_CellContentClick);
+            this.DGTTH2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DGTTH2_KeyDown);
             // 
             // dataGridViewTextBoxColumn16
             // 
@@ -2240,33 +2261,39 @@
             // 
             // ButtonShowTTH
             // 
-            this.ButtonShowTTH.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonShowTTH.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonShowTTH.Location = new System.Drawing.Point(6, 270);
             this.ButtonShowTTH.Name = "ButtonShowTTH";
             this.ButtonShowTTH.Size = new System.Drawing.Size(150, 38);
             this.ButtonShowTTH.TabIndex = 4;
-            this.ButtonShowTTH.Text = "Show All";
+            this.ButtonShowTTH.Text = "Show All and Refresh";
             this.ButtonShowTTH.UseVisualStyleBackColor = true;
             this.ButtonShowTTH.Click += new System.EventHandler(this.ButtonShowTTH_Click);
             // 
             // ButtonExportTTH
             // 
-            this.ButtonExportTTH.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonExportTTH.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.ButtonExportTTH.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonExportTTH.ForeColor = System.Drawing.Color.White;
             this.ButtonExportTTH.Location = new System.Drawing.Point(6, 314);
             this.ButtonExportTTH.Name = "ButtonExportTTH";
             this.ButtonExportTTH.Size = new System.Drawing.Size(150, 38);
             this.ButtonExportTTH.TabIndex = 3;
             this.ButtonExportTTH.Text = "Export to Excel";
-            this.ButtonExportTTH.UseVisualStyleBackColor = true;
+            this.ButtonExportTTH.UseVisualStyleBackColor = false;
+            this.ButtonExportTTH.Click += new System.EventHandler(this.ButtonExportTTH_Click);
             // 
             // ButtonFindTTH
             // 
+            this.ButtonFindTTH.BackColor = System.Drawing.Color.Blue;
+            this.ButtonFindTTH.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonFindTTH.ForeColor = System.Drawing.Color.White;
             this.ButtonFindTTH.Location = new System.Drawing.Point(6, 194);
             this.ButtonFindTTH.Name = "ButtonFindTTH";
             this.ButtonFindTTH.Size = new System.Drawing.Size(102, 29);
             this.ButtonFindTTH.TabIndex = 2;
             this.ButtonFindTTH.Text = "Find";
-            this.ButtonFindTTH.UseVisualStyleBackColor = true;
+            this.ButtonFindTTH.UseVisualStyleBackColor = false;
             this.ButtonFindTTH.Click += new System.EventHandler(this.ButtonFindTTH_Click);
             // 
             // CbcategoryTTH
@@ -2296,6 +2323,9 @@
             // 
             // LblUsername
             // 
+            this.LblUsername.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LblUsername.AutoSize = true;
             this.LblUsername.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LblUsername.Location = new System.Drawing.Point(18, 143);
@@ -2392,6 +2422,14 @@
             this.BGworkerTIW.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BGworkerTIW_ProgressChanged);
             this.BGworkerTIW.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGworkerTIW_RunWorkerCompleted);
             // 
+            // BGworkerTTH
+            // 
+            this.BGworkerTTH.WorkerReportsProgress = true;
+            this.BGworkerTTH.WorkerSupportsCancellation = true;
+            this.BGworkerTTH.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGworkerTTH_DoWork);
+            this.BGworkerTTH.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BGworkerTTH_ProgressChanged);
+            this.BGworkerTTH.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGworkerTTH_RunWorkerCompleted);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -2485,7 +2523,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(942, 687);
+            this.ClientSize = new System.Drawing.Size(942, 684);
             this.Controls.Add(this.LblAuthorize);
             this.Controls.Add(this.lbltime);
             this.Controls.Add(this.lblDate);
@@ -2779,6 +2817,9 @@
         private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem partNumberToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem masterToolingNumberListToolStripMenuItem;
+        private System.ComponentModel.BackgroundWorker BGworkerTTH;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem flowChartToolStripMenuItem;
     }
 }
 

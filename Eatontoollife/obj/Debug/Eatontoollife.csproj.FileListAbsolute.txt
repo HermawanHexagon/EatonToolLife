@@ -31,3 +31,7 @@ G:\Hexagon Project\EATON\software\Eatontoollife\Eatontoollife\obj\Debug\Eatontoo
 G:\Hexagon Project\EATON\software\Eatontoollife\Eatontoollife\obj\Debug\Eatontoollife.Insertdatabasepartnumber.resources
 G:\Hexagon Project\EATON\software\Eatontoollife\Eatontoollife\obj\Debug\Eatontoollife.InsertDatabaseTooling.resources
 G:\Hexagon Project\EATON\software\Eatontoollife\Eatontoollife\obj\Debug\Eatontoollife.Updatehistoryusage.resources
+G:\Hexagon Project\EATON\software\Eatontoollife\Eatontoollife\obj\Debug\Eatontoollife.Updatereturnhistory.resources
+G:\Hexagon Project\EATON\software\Eatontoollife\Eatontoollife\obj\Debug\Eatontoollife.viewunderproductioncs.resources
+G:\Hexagon Project\EATON\software\Eatontoollife\Eatontoollife\obj\Debug\Eatontoollife.Viewtoolingisseu.resources
+G:\Hexagon Project\EATON\software\Eatontoollife\Eatontoollife\obj\Debug\Eatontoollife.Protectpassword.resources

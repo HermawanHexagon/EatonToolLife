@@ -23,6 +23,7 @@ namespace Eatontoollife
         string Savepathexcel;
         List<string> collectdataexcel = new List<string>();
         int rowsdatagrid = 0;
+        int newrowsdatagrid = 0;
 
         public MainForm()
         {
@@ -43,8 +44,7 @@ namespace Eatontoollife
                 TreeViewDB.Nodes[0].Nodes[node].Nodes.Add("View Database");
                 TreeViewDB.Nodes[0].Nodes[node].Nodes.Add("Under Usage By Production");
                 TreeViewDB.Nodes[0].Nodes[node].Nodes.Add("Tools Issue / Welder Feedback");
-                TreeViewDB.Nodes[0].Nodes[node].Nodes.Add("Tools Transaction History");
-
+                //TreeViewDB.Nodes[0].Nodes[node].Nodes.Add("Tools Transaction History");
             }
 
             TreeViewDB.CollapseAll();
@@ -91,6 +91,7 @@ namespace Eatontoollife
                     //full access
                     importToolStripMenuItem.Enabled = true;
                     settingToolStripMenuItem.Enabled = true;
+                    insertToolStripMenuItem.Enabled = true;
                     Admintab.Enabled = true;
                     CbcategoryMPN.SelectedIndex = 0;
                 }
@@ -99,6 +100,7 @@ namespace Eatontoollife
                     //all function could not be accessed 
                     importToolStripMenuItem.Enabled = false;
                     settingToolStripMenuItem.Enabled = false;
+                    insertToolStripMenuItem.Enabled = false;
                     Admintab.Enabled = false;
                 }
 
@@ -152,11 +154,17 @@ namespace Eatontoollife
                 }
                 else if (selectnode[2].ToString() == Mydb.VDB[1]) //Under Usage By Production
                 {
-
+                    viewunderproductioncs view = new viewunderproductioncs();
+                    view.Querysql = "SELECT * FROM Toolingusage WHERE ProductFamily = '" + selectnode[1].Trim() + "'";
+                    view.ShowDialog();
+                    view.Dispose();
                 }
                 else if (selectnode[2].ToString() == Mydb.VDB[2]) //Tools Issue / Welder Feedback
                 {
-
+                    Viewtoolingisseu view = new Viewtoolingisseu();
+                    view.Querysql = "SELECT * FROM ToolingReturnedhistory WHERE ToolingIssue_Yes = 'Yes' AND ProductFamily = '" + selectnode[1].Trim() + "'";
+                    view.ShowDialog();
+                    view.Dispose();
                 }
                 else if (selectnode[2].ToString() == Mydb.VDB[3]) //Tools Transaction History
                 {
@@ -354,9 +362,16 @@ namespace Eatontoollife
         {
             try
             {
-                ImportMaster import = new ImportMaster();
-                import.ShowDialog();
-                import.Dispose();
+                Protectpassword pass = new Protectpassword();
+                pass.ShowDialog(); pass.Dispose();
+
+                if (pass.statuspassword)
+                {
+                    ImportMaster import = new ImportMaster();
+                    import.ShowDialog();
+                    import.Dispose();
+                }
+                
             }
             catch (Exception ex)
             {
@@ -369,9 +384,15 @@ namespace Eatontoollife
         {
             try
             {
-                ImportTooling import = new ImportTooling();
-                import.ShowDialog();
-                import.Dispose();
+                Protectpassword pass = new Protectpassword();
+                pass.ShowDialog(); pass.Dispose();
+
+                if (pass.statuspassword)
+                {
+                    ImportTooling import = new ImportTooling();
+                    import.ShowDialog();
+                    import.Dispose();
+                }
             }
             catch (Exception ex)
             {
@@ -928,7 +949,7 @@ namespace Eatontoollife
                         if (Reader["ToolsDrawingNumber"].ToString() != "" && Reader["ToolsDrawingNumber"].ToString() != null)
                         {
                             DGMTN.Rows.Add("Edit Data", Reader["PartNumber"].ToString(), Reader["ProductFamily"].ToString(), Reader["ToolingNumber"].ToString(),
-                                       Reader["Descriptions"].ToString(), Reader["LocationsStorage"].ToString(), Reader["Qty"].ToString(), "Download This File",
+                                       Reader["Descriptions"].ToString(), Reader["LocationsStorage"].ToString(), Reader["Qty"].ToString(), "View File",
                                        Reader["Revisions"].ToString(), Reader["Remarks"].ToString(), Reader["Status"].ToString(), Reader["LifeTimetoolingperiode"].ToString(),
                                        Reader["Warning"].ToString(), Reader["Lifetimeusage"].ToString());
                         }
@@ -1144,8 +1165,18 @@ namespace Eatontoollife
                     }
                     else //download
                     {
-                        if (MessageBox.Show("Do you want to download this file?", "Information", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        if (MessageBox.Show("Do you want to see this file?", "Information", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
+                            try
+                            {
+                                System.Diagnostics.Process.Start(Mydb.GetLocationserverpath(DGMTN.Rows[e.RowIndex].Cells[1].Value.ToString(), DGMTN.Rows[e.RowIndex].Cells[3].Value.ToString()));
+                            }
+                            catch (Exception copyError)
+                            {
+                                MessageBox.Show(copyError.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            
+                            /*
                             SaveFileDialog savepath = new SaveFileDialog();
                             savepath.Filter = "PDF File(*.Pdf;)|*.Pdf;";
                             savepath.Title = "Save File";
@@ -1165,6 +1196,7 @@ namespace Eatontoollife
                                 }
                                 
                             }
+                            */
                         }
                     }
                 }
@@ -2393,7 +2425,7 @@ namespace Eatontoollife
 
         private string[] GetDatagridTTH2(int row)
         {
-            string[] data = new string[12];
+            string[] data = new string[13];
 
             for (int i = 1; i < DGTTH2.ColumnCount; i++)
             {
@@ -2446,7 +2478,7 @@ namespace Eatontoollife
 
                     foreach (DataGridViewCell oneCell in DGTTH2.SelectedCells)
                     {
-                        if (!Mydb.DeleteMastertoolissue(DGTTH2.Rows[oneCell.RowIndex].Cells[2].Value.ToString(), DGTTH2.Rows[oneCell.RowIndex].Cells[3].Value.ToString(), DGTIW.Rows[oneCell.RowIndex].Cells[1].Value.ToString()))
+                        if (!Mydb.DeleteMastertooltranscationreturn(DGTTH2.Rows[oneCell.RowIndex].Cells[2].Value.ToString(), DGTTH2.Rows[oneCell.RowIndex].Cells[3].Value.ToString(), DGTTH2.Rows[oneCell.RowIndex].Cells[1].Value.ToString()))
                         {
                             MessageBox.Show("Something an error when deleted. Please contact the developer", "Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             StatusDelete = false; break;
@@ -2466,13 +2498,24 @@ namespace Eatontoollife
                 MessageBox.Show(ex.Message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        
         private void DGTTH1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (DGTTH1.Rows[e.RowIndex].Cells[e.ColumnIndex] is DataGridViewLinkCell)
             {
                 Updatehistoryusage update = new Updatehistoryusage();
                 update.Datareceived = GetDatagridTTH1(DGTTH1.SelectedCells[0].RowIndex);
+                update.ShowDialog();
+                update.Dispose();
+            }
+        }
+
+        private void DGTTH2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (DGTTH2.Rows[e.RowIndex].Cells[e.ColumnIndex] is DataGridViewLinkCell)
+            {
+                Updatereturnhistory update = new Updatereturnhistory();
+                update.Datareceived = GetDatagridTTH2(DGTTH2.SelectedCells[0].RowIndex);
                 update.ShowDialog();
                 update.Dispose();
             }
@@ -2496,9 +2539,245 @@ namespace Eatontoollife
             }
         }
 
+        private void DGTTH2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (MessageBox.Show("Are you sure going to delete this information permanently?", "Information", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        DeleteDataMasterTTH2();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString(), "Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+        }
+
+        private void BGworkerTTH_DoWork(object sender, DoWorkEventArgs e)
+        {
+            int coloumlist = 0;
+            int Counterprogress = 0;
+
+            Excel.Application xlApp;
+            Excel.Workbook xlWorkBook;
+            Excel.Worksheet xlWorkSheet;
+            Excel.Range formatRange;
+
+            object misValue = System.Reflection.Missing.Value;
+
+            xlApp = new Excel.Application();
+            xlWorkBook = xlApp.Workbooks.Add(misValue);
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            //take out
+            xlWorkSheet.Cells[1, 1] = "Date Time Out";
+            xlWorkSheet.Cells[1, 2] = "Part Number";
+            xlWorkSheet.Cells[1, 3] = "Tooling Number";
+            xlWorkSheet.Cells[1, 4] = "Descriptions";
+            xlWorkSheet.Cells[1, 5] = "Customer";
+            xlWorkSheet.Cells[1, 6] = "Storage Location";
+            xlWorkSheet.Cells[1, 7] = "Actual Qty";
+            xlWorkSheet.Cells[1, 8] = "Tooling Out Qty";
+            xlWorkSheet.Cells[1, 9] = "WO Number";
+            xlWorkSheet.Cells[1, 10] = "WO (Qty Diaphragm)";
+            xlWorkSheet.Cells[1, 11] = "Note";
+            xlWorkSheet.Cells[1, 12] = "Taken By";
+            xlWorkSheet.Cells[1, 13] = "Life Time Usage";
+
+            formatRange = xlWorkSheet.get_Range("a1");
+            formatRange.EntireRow.Font.Bold = true;
+            formatRange = xlWorkSheet.get_Range("a1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("b1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("c1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("d1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("e1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("f1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("g1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("h1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("i1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("j1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("k1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("l1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("m1"); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+
+            for (int row = 0; row < rowsdatagrid; row++)
+            {
+                for (int col = 1; col < 14; col++)
+                {
+                    xlWorkSheet.Cells[row + 2, col] = collectdataexcel[coloumlist++];
+                }
+
+                BGworkerTTH.ReportProgress((Int32)Math.Round((double)(Counterprogress++ * 100) / ((rowsdatagrid + newrowsdatagrid) - 1)));
+            }
+
+            //buat 2 space
+
+            for (int row = (rowsdatagrid + 2); row < (rowsdatagrid + 4); row++)
+            {
+                for (int col = 1; col < 14; col++)
+                {
+                    xlWorkSheet.Cells[row, col] = "";
+                }
+            }
+
+            //return
+            xlWorkSheet.Cells[rowsdatagrid + 4, 1] = "Date Time Returned";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 2] = "Part Number";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 3] = "Tooling Number";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 4] = "Tooling Issue Status";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 5] = "Descriptions";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 6] = "Customer";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 7] = "Tool Status";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 8] = "Returned Tool Quantity";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 9] = "Reason not complete";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 10] = "Technician Feedback";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 11] = "Welder";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 12] = "Return By";
+            xlWorkSheet.Cells[rowsdatagrid + 4, 13] = "Life Time Usage";  
+
+            formatRange = xlWorkSheet.get_Range("a" + (rowsdatagrid + 4).ToString());
+            formatRange.EntireRow.Font.Bold = true;
+            formatRange = xlWorkSheet.get_Range("a" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("b" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("c" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("d" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("e" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("f" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("g" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("h" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("i" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("j" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("k" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("l" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+            formatRange = xlWorkSheet.get_Range("m" + (rowsdatagrid + 4).ToString()); formatRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow); formatRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing); formatRange.HorizontalAlignment = 3; formatRange.VerticalAlignment = 3;
+
+            for (int row = (rowsdatagrid + 3); row < ((rowsdatagrid + 3) + newrowsdatagrid); row++)
+            {
+                for (int col = 1; col < 14; col++)
+                {
+                    xlWorkSheet.Cells[row + 2, col] = collectdataexcel[coloumlist++];
+                }
+
+                BGworkerTTH.ReportProgress((Int32)Math.Round((double)(Counterprogress++ * 100) / ((rowsdatagrid + newrowsdatagrid) - 1)));
+            }
+
+            xlWorkBook.SaveAs(Savepathexcel, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            xlWorkBook.Close(true, misValue, misValue);
+            xlApp.Quit();
+
+            releaseObject(xlWorkSheet);
+            releaseObject(xlWorkBook);
+            releaseObject(xlApp);
+        }
+
+        private void BGworkerTTH_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (!BGworkerTTH.CancellationPending)
+            {
+                ProgressStatusTTH.Text = e.ProgressPercentage.ToString() + "%";
+                ProgressbarTTH.Value = e.ProgressPercentage;
+                ProgressbarTTH.Update();
+            }
+        }
+
+        private void BGworkerTTH_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (!e.Cancelled && e.Error == null)//Check if the worker has been canceled or if an error occurred
+            {
+                MessageBox.Show("Export completed!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("An error has occurred", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            ButtonExportTTH.Enabled = true;
+        }
+
+        private void collectdatafromgridTTH()
+        {
+            rowsdatagrid = 0;
+            newrowsdatagrid = 0;
+            //clear
+            if (collectdataexcel.Count > 0) collectdataexcel.Clear();
+
+            //collect data
+            for (int row = 0; row < DGTTH1.RowCount; row++)
+            {
+                for (int col = 1; col < 14; col++)
+                {
+                    collectdataexcel.Add(DGTTH1.Rows[row].Cells[col].Value.ToString());
+                }
+            }
+
+            for (int row = 0; row < DGTTH2.RowCount; row++)
+            {
+                for (int col = 1; col < 14; col++)
+                {
+                    collectdataexcel.Add(DGTTH2.Rows[row].Cells[col].Value.ToString());
+                }
+            }
+
+            rowsdatagrid = DGTTH1.RowCount;
+            newrowsdatagrid = DGTTH2.RowCount;
+
+        }
+
+        private void ButtonExportTTH_Click(object sender, EventArgs e)
+        {
+            Savepathexcel = string.Empty;
+
+            SaveFileDialog savepath = new SaveFileDialog();
+            savepath.Filter = "Excel (*.xls)|*.xls";
+
+            if (DGTTH1.Rows.Count > 0 && DGTTH2.Rows.Count > 0)
+            {
+                if (savepath.ShowDialog() == DialogResult.OK)
+                {
+                    if (!savepath.FileName.Equals(String.Empty))
+                    {
+                        FileInfo file = new FileInfo(savepath.FileName);
+                        if (file.Extension.Equals(".xls"))
+                        {
+                            Savepathexcel = savepath.FileName;
+
+                            if (!BGworkerTTH.IsBusy)
+                            {
+                                ButtonExportTTH.Enabled = false;
+                                ProgressbarTTH.Value = 0;
+                                collectdatafromgridTTH();
+                                BGworkerTTH.RunWorkerAsync();
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("You did pick a location" + " to save file to");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Cannot export.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
         #endregion
 
-        
-   
+        private void flowChartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(@".\Flow\Flow Tool Life Management System.pdf");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+        }
     }
 }

@@ -859,6 +859,9 @@ namespace Eatontoollife
                 connection.Open();
 
                 if(ST10.ToLower().Trim() != "under used by prod") ST10 = "";
+                if (ST11.Trim() == "") ST11 = "0";
+                if (ST12.Trim() == "") ST12 = "0";
+                if (ST13.Trim() == "") ST13 = "0";
 
                 Insert.Parameters.AddWithValue("@PartNumber", ST1);
                 Insert.Parameters.AddWithValue("@ProductFamily", ST2.ToUpper().Trim());
@@ -933,6 +936,8 @@ namespace Eatontoollife
             try
             {
                 connection.Open();
+                if (ST16.Trim() == "") ST16 = "0";
+                if (ST17.Trim() == "") ST17 = "0";
 
                 Insert.Parameters.AddWithValue("@PartNumber", ST1);
                 Insert.Parameters.AddWithValue("@Descriptions", ST2);
@@ -1567,6 +1572,42 @@ namespace Eatontoollife
             return Status;
         }
 
+        public bool UpdateMasterreturntoolusehistory(string[] Getdatainfoupdate)
+        {
+            bool Status = false;
+
+            SqlConnection connection = new SqlConnection(connectionstring);
+            SqlCommand update = new SqlCommand("UPDATE ToolingReturnedhistory SET ToolingNumber=@ToolingNumber, ToolsName=@ToolsName, PartNumber=@PartNumber, ProductFamily=@ProductFamily, dateTimeReturned=@dateTimeReturned, Returnby=@Returnby, ReturnedQTY=@ReturnedQTY, ToolsStatus=@ToolsStatus, Reasonnotcompleted=@Reasonnotcompleted, Usedby=@Usedby, ToolingIssue_Yes=@ToolingIssue_Yes, TechnicianansFeedback=@TechnicianansFeedback, Lifetimeusage=@Lifetimeusage WHERE PartNumber=@PartNumber AND ToolingNumber=@ToolingNumber AND dateTimeReturned=@dateTimeReturned", connection);
+            update.Parameters.AddWithValue("@dateTimeReturned", Getdatainfoupdate[0]);
+            update.Parameters.AddWithValue("@PartNumber", Getdatainfoupdate[1].Trim());
+            update.Parameters.AddWithValue("@ToolingNumber", Getdatainfoupdate[2].Trim());
+            update.Parameters.AddWithValue("@ToolingIssue_Yes", Getdatainfoupdate[3].Trim());
+            update.Parameters.AddWithValue("@ToolsName", Getdatainfoupdate[4]);
+            update.Parameters.AddWithValue("@ProductFamily", Getdatainfoupdate[5].ToUpper().Trim());
+            update.Parameters.AddWithValue("@ToolsStatus", Getdatainfoupdate[6]);
+            update.Parameters.AddWithValue("@ReturnedQTY", Getdatainfoupdate[7].Trim());
+            update.Parameters.AddWithValue("@Reasonnotcompleted", Getdatainfoupdate[8]);
+            update.Parameters.AddWithValue("@TechnicianansFeedback", Getdatainfoupdate[9]);
+            update.Parameters.AddWithValue("@Usedby", Getdatainfoupdate[10].Trim());
+            update.Parameters.AddWithValue("@Returnby", Getdatainfoupdate[11]); //Lifetimeusage
+            update.Parameters.AddWithValue("@Lifetimeusage", Getdatainfoupdate[12]);
+            connection.Open();
+
+            try
+            {
+                update.ExecuteNonQuery();
+                Status = true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            connection.Close();
+
+            return Status;
+        }
+
         public bool UpdateMastertoolissue(string[] Getdatainfoupdate)
         {
             bool Status = false;
@@ -1679,14 +1720,14 @@ namespace Eatontoollife
             bool Status = false;
 
             SqlConnection connection = new SqlConnection(connectionstring);
-            SqlCommand update = new SqlCommand("UPDATE ToolingListnumber SET PartNumber=@PartNumber, ProductFamily=@ProductFamily, ToolingNumber=@ToolingNumber, Descriptions=@Descriptions, LocationsStorage=@LocationsStorage, Qty=@Qty, ToolsDrawingNumber=@ToolsDrawingNumber, Revisions=@Revisions, Remarks=@Remarks, Status=@Status, LifeTimetoolingperiode=@LifeTimetoolingperiode, Warning=@Warning, Lifetimeusage=@Lifetimeusage WHERE PartNumber=@PartNumber AND ToolingNumber=@ToolingNumber", connection);
+            SqlCommand update = new SqlCommand("UPDATE ToolingListnumber SET PartNumber=@PartNumber, ToolsDrawingNumber=@ToolsDrawingNumber, ProductFamily=@ProductFamily, ToolingNumber=@ToolingNumber, Descriptions=@Descriptions, LocationsStorage=@LocationsStorage, Qty=@Qty, Revisions=@Revisions, Remarks=@Remarks, Status=@Status, LifeTimetoolingperiode=@LifeTimetoolingperiode, Warning=@Warning, Lifetimeusage=@Lifetimeusage WHERE PartNumber=@PartNumber AND ToolingNumber=@ToolingNumber", connection);
             update.Parameters.AddWithValue("@PartNumber", Getdatainfoupdate[0]);
             update.Parameters.AddWithValue("@ProductFamily", Getdatainfoupdate[1].ToUpper().Trim());
             update.Parameters.AddWithValue("@ToolingNumber", Getdatainfoupdate[2]);
             update.Parameters.AddWithValue("@Descriptions", Getdatainfoupdate[3]);
             update.Parameters.AddWithValue("@LocationsStorage", Getdatainfoupdate[4]);
-            update.Parameters.AddWithValue("@ToolsDrawingNumber", Getdatainfoupdate[5]);
-            update.Parameters.AddWithValue("@Qty", Getdatainfoupdate[6]);
+            update.Parameters.AddWithValue("@ToolsDrawingNumber", Getdatainfoupdate[6]);
+            update.Parameters.AddWithValue("@Qty", Getdatainfoupdate[5]);
             update.Parameters.AddWithValue("@Revisions", Getdatainfoupdate[7]);
             update.Parameters.AddWithValue("@Remarks", Getdatainfoupdate[8]);
             update.Parameters.AddWithValue("@Status", Getdatainfoupdate[9].ToLower().Trim());
@@ -1740,6 +1781,32 @@ namespace Eatontoollife
             try
             {
                 update.ExecuteNonQuery();
+                Status = true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            connection.Close();
+
+            return Status;
+        }
+
+        public bool DeleteMastertooltranscationreturn(string partnumber, string toolingnumber, string date)
+        {
+            bool Status = false;
+
+            SqlConnection connection = new SqlConnection(connectionstring);
+            SqlCommand delete = new SqlCommand("DELETE FROM ToolingReturnedhistory WHERE PartNumber=@PartNumber AND ToolingNumber=@ToolingNumber AND dateTimeReturned=@dateTimeReturned", connection);
+            delete.Parameters.AddWithValue("@PartNumber", partnumber);
+            delete.Parameters.AddWithValue("@ToolingNumber", toolingnumber);
+            delete.Parameters.AddWithValue("@dateTimeReturned", date);
+            connection.Open();
+
+            try
+            {
+                delete.ExecuteNonQuery();
                 Status = true;
             }
             catch (Exception)

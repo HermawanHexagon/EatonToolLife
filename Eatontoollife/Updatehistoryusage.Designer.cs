@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Updatehistoryusage));
             this.ButtonExit = new System.Windows.Forms.Button();
             this.ButtonUpdate = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -68,6 +69,7 @@
             this.ButtonExit.TabIndex = 12;
             this.ButtonExit.Text = "Exit";
             this.ButtonExit.UseVisualStyleBackColor = true;
+            this.ButtonExit.Click += new System.EventHandler(this.ButtonExit_Click);
             // 
             // ButtonUpdate
             // 
@@ -342,7 +344,11 @@
             this.Controls.Add(this.ButtonExit);
             this.Controls.Add(this.ButtonUpdate);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Updatehistoryusage";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Update History Tooling Usage";
             this.Load += new System.EventHandler(this.Updatehistoryusage_Load);
             this.groupBox1.ResumeLayout(false);
